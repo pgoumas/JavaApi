@@ -1,14 +1,37 @@
 package com.tutorialspoint;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class BankThreadSafe {
    
 	BankThreadSafe(){
 		//initialize class
+		/* try { 
+	         File file = new File("Accounts.dat"); 
+	         if (!file.exists()) {  
+	            saveAccountList(accounts); 
+	         } 
+	         else{ 
+	        	 Properties properties = new Properties();
+	        	 properties.load(new FileInputStream("Accounts.dat"));
+
+	        	 for (String key : properties.stringPropertyNames()) {
+	        		 accounts.put(key, Integer.parseUnsignedInt(properties.get(key).toString()));
+	        	 }
+	         } 
+	      } catch (IOException e) { 
+	         e.printStackTrace(); 
+	      } finally {
+		}   
+		*/
 	}
-    // map from account number to balance
+  
+	// map from account number to balance
     private static Map<String, Integer> accounts = new ConcurrentHashMap<String, Integer>();
 
     public Boolean transfer(String sourceAccount, String destinationAccount ,int sum) throws IllegalArgumentException {
@@ -48,6 +71,12 @@ public final class BankThreadSafe {
            }
     }
     
+    public Map<String, Integer> getAllAccounts() {
+    	synchronized(accounts) {
+             return accounts;
+    	}
+    }
+    
     public Boolean AccountExists(String account) {
     	synchronized(accounts) {
              Boolean result = accounts.containsKey(account.intern());
@@ -72,4 +101,23 @@ public final class BankThreadSafe {
             return sum;
         }
     }
+    
+    @SuppressWarnings("unused")
+	private void saveAccountList(Map<String, Integer> accountList) {
+	      try { 
+	    	 
+	    	  Properties properties = new Properties();
+
+	    	  for (Map.Entry<String,Integer> entry : accounts.entrySet()) {
+	    	      properties.put(entry.getKey(), entry.getValue());
+	    	  }
+
+	    	  properties.store(new FileOutputStream("Accounts.dat"), null);
+
+	      } catch (FileNotFoundException e) { 
+	         e.printStackTrace(); 
+	      } catch (IOException e) { 
+	         e.printStackTrace(); 
+	      } 
+	   }   
 }
