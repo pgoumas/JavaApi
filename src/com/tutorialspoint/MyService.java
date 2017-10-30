@@ -39,15 +39,13 @@ public class MyService {
    @POST 
    @Path("/addAccount") 
    @Produces(MediaType.APPLICATION_JSON) 
-   	public List<String> addAccount(String accountName)
+   	public List<String> addAccount(String param)
    	{
 	   
+	   String accountName = param.toString();
+	   
 	List<String> result = new ArrayList<String>();
-	
-	
-	
-	//String accountName = request.getParameter("accountName");
-	
+		
 	Boolean accountExists = bts.AccountExists(accountName);
 	if (!accountExists) {
 		if (bts.addAccount(accountName)) {

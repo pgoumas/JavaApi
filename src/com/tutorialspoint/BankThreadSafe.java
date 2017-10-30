@@ -1,38 +1,32 @@
 package com.tutorialspoint;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class BankThreadSafe {
    
-	BankThreadSafe(){
-		//initialize class
-		/* try { 
-	         File file = new File("Accounts.dat"); 
-	         if (!file.exists()) {  
-	            saveAccountList(accounts); 
-	         } 
-	         else{ 
-	        	 Properties properties = new Properties();
-	        	 properties.load(new FileInputStream("Accounts.dat"));
-
-	        	 for (String key : properties.stringPropertyNames()) {
-	        		 accounts.put(key, Integer.parseUnsignedInt(properties.get(key).toString()));
-	        	 }
-	         } 
-	      } catch (IOException e) { 
-	         e.printStackTrace(); 
-	      } finally {
-		}   
-		*/
-	}
-  
 	// map from account number to balance
     private static Map<String, Integer> accounts = new ConcurrentHashMap<String, Integer>();
+
+	private File file = new File("Accounts.dat");
+	
+	BankThreadSafe(){
+		//initialize class
+		   if (!file.exists()) {  
+			   saveAccountList(accounts);
+	         }
+		   else {
+			   accounts = readAccountList();
+		   }
+	}
+  
 
     public Boolean transfer(String sourceAccount, String destinationAccount ,int sum) throws IllegalArgumentException {
     	Boolean result = false;
@@ -88,7 +82,12 @@ public final class BankThreadSafe {
     	synchronized(accounts) {
              accounts.put(account.intern(),0);
              Boolean result = accounts.containsKey(account.intern());
-             return result;
+             if (result) {
+            	 return saveAccountList(accounts);
+             }
+             else {
+             return false;
+             }
     	}
     }
  
@@ -102,22 +101,40 @@ public final class BankThreadSafe {
         }
     }
     
-    @SuppressWarnings("unused")
-	private void saveAccountList(Map<String, Integer> accountList) {
-	      try { 
-	    	 
-	    	  Properties properties = new Properties();
+    @SuppressWarnings("unchecked")
+	private Map<String, Integer> readAccountList()
+    {
+  	  Map<String, Integer> accountsonFile = new ConcurrentHashMap<String, Integer>();
 
-	    	  for (Map.Entry<String,Integer> entry : accounts.entrySet()) {
-	    	      properties.put(entry.getKey(), entry.getValue());
-	    	  }
-
-	    	  properties.store(new FileOutputStream("Accounts.dat"), null);
-
+    	try {
+			   FileInputStream f = new FileInputStream(file);  
+			   ObjectInputStream s = new ObjectInputStream(f);  
+			   accountsonFile = (Map<String,Integer>)s.readObject();         
+			   s.close();
+			}
+			catch (IOException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	return accountsonFile;
+    }
+  
+	private Boolean saveAccountList(Map<String, Integer> accountList) {
+	       
+		boolean result = true;
+	    	  FileOutputStream f;
+	  		try {
+	  			f = new FileOutputStream(file);
+	  			ObjectOutputStream s;
+	  			s = new ObjectOutputStream(f);
+	  			s.writeObject(accounts);
+	  			s.flush();
+	  			s.close();
 	      } catch (FileNotFoundException e) { 
 	         e.printStackTrace(); 
 	      } catch (IOException e) { 
 	         e.printStackTrace(); 
 	      } 
+	  		return result;
 	   }   
 }
