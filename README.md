@@ -13,3 +13,5 @@ example:
     "456123": 0,
     "4ff56123": 0
 }
+
+find junit tests at TestBankThreadSafe
