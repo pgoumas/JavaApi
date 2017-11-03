@@ -1,18 +1,18 @@
-package com.tutorialspoint;  
+package com.pg.bankservice;  
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import org.json.*;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path; 
 import javax.ws.rs.Produces; 
 import javax.ws.rs.core.MediaType;  
 
-@Path("/MyService") 
+@Path("/BankService") 
 
-public class MyService {
+public class BankService {
 	
 	BankThreadSafe bts = new BankThreadSafe();   
 	
@@ -41,8 +41,16 @@ public class MyService {
    @Produces(MediaType.APPLICATION_JSON) 
    	public List<String> addAccount(String param)
    	{
+	   JSONArray array = new JSONArray(param); 
+
+	   String accountName = "";
 	   
-	   String accountName = param.toString();
+	   for(int i=0; i<array.length(); i++){
+	       JSONObject jsonObj = array.getJSONObject(i);
+	       accountName = jsonObj.getString("account");
+	   }
+	   
+	
 	   
 	List<String> result = new ArrayList<String>();
 		

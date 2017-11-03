@@ -1,10 +1,13 @@
-package com.tutorialspoint;  
+package com.pg.bankservice;  
 
 import java.io.Serializable;  
 import javax.xml.bind.annotation.XmlElement; 
 import javax.xml.bind.annotation.XmlRootElement; 
+/**
+ * @author pgoumas
+ *
+ */
 @XmlRootElement(name = "account") 
-
 public class Account implements Serializable {  
    private static final long serialVersionUID = 1L; 
    private int id; 
@@ -12,29 +15,54 @@ public class Account implements Serializable {
    private int balance;  
    public Account(){} 
     
-   public Account(int id, String name, int balance){  
+   /**
+ * @param id
+ * @param name
+ * @param balance
+ */
+public Account(int id, String name, int balance){  
       this.id = id; 
       this.name = name; 
       this.balance = balance; 
    }  
-   public int getId() { 
+
+   /**
+ * @return
+ */
+public int getId() { 
       return id; 
    }  
-   @XmlElement 
+
+   /**
+ * @param id
+ */
+@XmlElement 
    public void setId(int id) { 
       this.id = id; 
    } 
-   public String getName() { 
+
+/**
+ * @return
+ */
+public String getName() { 
       return name; 
    } 
-   @XmlElement
+
+/**
+ * @param name
+ */
+@XmlElement
    public void setName(String name) { 
       this.name = name; 
    } 
    public int getBalance() { 
       return balance; 
    } 
-   @XmlElement 
+
+/**
+ * @param balance
+ */
+@XmlElement 
    public void setBalance(int balance) { 
       this.balance = balance; 
    }   

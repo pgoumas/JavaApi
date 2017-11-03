@@ -1,10 +1,15 @@
 # Java
-Java
 
-https://localhost/JavaAPI/rest/UserService/users
+method:POST
+https://localhost/JavaAPI/rest/BankService/addAccount
+example:
 
-https://localhost/JavaAPI/rest/MyService/
+[{"account":"456123"}]
 
-https://localhost/JavaAPI/rest/MyService/addAccount
-
-https://localhost/JavaAPI/rest/MyService/getAllAccounts
+method:GET
+https://localhost/JavaAPI/rest/BankService/getAllAccounts
+example:
+{
+    "456123": 0,
+    "4ff56123": 0
+}

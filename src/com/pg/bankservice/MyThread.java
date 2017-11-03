@@ -1,7 +1,11 @@
-package com.tutorialspoint;
+package com.pg.bankservice;
 
 import static org.junit.Assert.fail;
 
+/**
+ * @author pgoum
+ *
+ */
 public class MyThread extends Thread {
 	  
 		String account = "";
@@ -13,6 +17,9 @@ public class MyThread extends Thread {
 			deposit = (int) parameter2;
 	   }
     
+	/* 
+	 * @see java.lang.Thread#run()
+	 */
 	public void run(){
     	
     	BankThreadSafe bts = new BankThreadSafe();

@@ -1,32 +1,23 @@
 /**
  * 
  */
-package com.tutorialspoint;
+package com.pg.bankservice;
 
 import static org.junit.Assert.*;
-
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
 
-
 /**
- * @author 
+ * @author pgoumas
  *
  */
 public class TestBankThreadSafe {
 
-	@Test
-	public void test() {
-		 UserDao userDao = new UserDao();  
-		 List<User> u = userDao.getAllUsers();
-		 if (u.size()<0) {
-			 fail("zero results");
-		 }
-	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void test_deposit_on_new_account() {
 		BankThreadSafe bts = new BankThreadSafe();
@@ -47,6 +38,9 @@ public class TestBankThreadSafe {
 		assertEquals(balance,1000);
 		}
 	  
+	/**
+	 * 
+	 */
 	@Test
 	public void test_deposit_on_multiple_threads() {
 		
@@ -76,6 +70,9 @@ public class TestBankThreadSafe {
       
 	}
 	
+	/**
+	 * 
+	 */
 	@Test	
 	public void test_add_account() {
 		Boolean result = false;
@@ -93,6 +90,9 @@ public class TestBankThreadSafe {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Test	
 	public void test_transfer() {
 		
