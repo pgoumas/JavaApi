@@ -23,7 +23,7 @@ public class TestBankThreadSafe {
 		BankThreadSafe bts = new BankThreadSafe();
 		Random randomGenerator = new Random();
 		int randomInt = randomGenerator.nextInt(100);
-		String account = "123"+randomInt;
+		String account = "AC"+randomInt;
 		Boolean accountExists = bts.AccountExists(account);
 		if (!accountExists) {
 			Boolean accountCreated = bts.addAccount(account);
@@ -81,8 +81,8 @@ public class TestBankThreadSafe {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int balance = bts.balance(account);
-		assertEquals(balance,previousBalance+deposit1+deposit2);
+		int currentbalance = bts.balance(account);
+		assertEquals(currentbalance,previousBalance+deposit1+deposit2);
       
       
 	}

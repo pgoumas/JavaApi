@@ -20,10 +20,10 @@ public final class BankThreadSafe {
 	BankThreadSafe(){
 		//initialize class
 		   if (!file.exists()) {  
-			   //saveAccountList(accounts);
+			   saveAccountList(accounts);
 	         }
 		   else {
-			   accounts = readAccountList();
+			   //accounts = readAccountList();
 		   }
 	}
   
@@ -50,7 +50,12 @@ public final class BankThreadSafe {
             int balance = 0;
             balance = accounts.get(account);
             result = accounts.put(account, balance + sum);
-        	return result;
+            if (saveAccountList(accounts)) {
+            	return result;
+            }
+            else {
+            	return -1;
+            }
         }
     }
 
