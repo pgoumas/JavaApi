@@ -20,7 +20,7 @@ public final class BankThreadSafe {
 	BankThreadSafe(){
 		//initialize class
 		   if (!file.exists()) {  
-			   saveAccountList(accounts);
+			   //saveAccountList(accounts);
 	         }
 		   else {
 			   accounts = readAccountList();
@@ -60,6 +60,9 @@ public final class BankThreadSafe {
     			Boolean accountExists = this.AccountExists(account);
     			if (accountExists) {
     				result = accounts.get(account);
+    			}
+    			else {
+    				
     			}
                return result;
            }

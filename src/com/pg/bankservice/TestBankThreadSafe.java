@@ -21,7 +21,9 @@ public class TestBankThreadSafe {
 	@Test
 	public void test_deposit_on_new_account() {
 		BankThreadSafe bts = new BankThreadSafe();
-		String account = "123";
+		Random randomGenerator = new Random();
+		int randomInt = randomGenerator.nextInt(100);
+		String account = "123"+randomInt;
 		Boolean accountExists = bts.AccountExists(account);
 		if (!accountExists) {
 			Boolean accountCreated = bts.addAccount(account);
@@ -44,11 +46,26 @@ public class TestBankThreadSafe {
 	@Test
 	public void test_deposit_on_multiple_threads() {
 		
-		String account = "123";
+		Random randomGenerator = new Random();
+		int randomInt = randomGenerator.nextInt(10000);
+		String account = "AC"+randomInt;
+		
 		int deposit1 = 1000;
 		int deposit2 = 1000;
 		
 		BankThreadSafe bts = new BankThreadSafe();
+		
+		Boolean accountExists = bts.AccountExists(account);
+		if (!accountExists) {
+			Boolean accountCreated = bts.addAccount(account);
+			if (!accountCreated) {
+				fail("failed to create account!");
+			}
+		}
+		else {
+			fail("account exists!");
+		}
+		
 		int previousBalance = bts.balance(account);
 		
 		MyThread myThread = new MyThread(account,deposit1);
@@ -77,9 +94,10 @@ public class TestBankThreadSafe {
 	public void test_add_account() {
 		Boolean result = false;
 		BankThreadSafe bts = new BankThreadSafe();
-		Random rand = new Random();
-		int  n = rand.nextInt(50) + 1;
-		String account = "123"+n;
+		Random randomGenerator = new Random();
+		int randomInt = randomGenerator.nextInt(10000);
+		String account = "AC"+randomInt;
+		
 		Boolean accountExists = bts.AccountExists(account);
 		if (!accountExists) {
 			result = bts.addAccount(account);
